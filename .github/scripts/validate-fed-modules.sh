@@ -2,37 +2,7 @@
 
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-set -eo pipefail
-
-
-
-# Set a trap to catch errors in the script and print an 
-# error message with the line number where the error occurred.
-trap 's=$?; echo "Error on $LINENO"; exit $s' ERR
-
-
-# Define color variables
-bold='\e[1m'
-red='\e[1;31m'
-green='\e[1;32m'
-yellow='\e[1;33m'
-reset='\e[0m'
-
-
-# Utils
-# ---
-function error() {
-    echo "${bold}${red}Error${reset}: $1"
-}
-
-function info() {
-    echo "${bold}${green}info${reset}: $1"
-}
-
-function log() {
-    echo "${yellow}${1}${reset}"
-}
-
+set -euo pipefail
 
 
 # Find all files named "fed-modules.json" in the "static" directory
@@ -49,10 +19,10 @@ do
   invalid_keys=$(cat $file | jq 'keys[] | select(test("^[a-z]+([A-Z][a-z]*)*$") | not)')
   
   if [ -z "$invalid_keys" ]; then
-      info "${file} is valid."
+      echo "${file} is valid."
   else
-      error "${file} is invalid. Below keys must be camel-cased."
-      log "${invalid_keys}"
+      echo "Error: ${file} is invalid. Below keys must be camel-cased."
+      echo "${invalid_keys}"
       valid=false
   fi
 
