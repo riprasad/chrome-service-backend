@@ -14,22 +14,10 @@ trap 's=$?; echo "Error on $LINENO"; exit $s' ERR
 # ---
 # Inspired from: https://unix.stackexchange.com/questions/9957/how-to-check-if-bash-can-print-colors
 
-f_bold=
-f_normal=
-f_red=
-f_green=
-
-# Check if we are in a terminal...
-if [[ -n "$TERM" ]]; then
-    # See if it supports colors...
-    nc=$(tput colors || true)
-    if [[ -n "$nc" ]] && [[ $nc -ge 8 ]]; then
-        f_bold="$(tput bold)"
-        f_normal="$(tput sgr0)"
-        f_red="$(tput setaf 1)"
-        f_green="$(tput setaf 2)"
-    fi
-fi
+f_bold="$(tput bold)"
+f_normal="$(tput sgr0)"
+f_red="$(tput setaf 1)"
+f_green="$(tput setaf 2)"
 
 
 # Utils
