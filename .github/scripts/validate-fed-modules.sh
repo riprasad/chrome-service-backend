@@ -17,12 +17,13 @@ do
 
   # Read the contents of the file and pass them to the jq command to extract all keys that are not camel-cased.
   invalid_keys=$(cat $file | jq 'keys[] | select(test("^[a-z]+([A-Z][a-z]*)*$") | not)')
-  
+  echo ""
+
   if [ -z "$invalid_keys" ]; then
       echo "${file} is valid."
   else
       echo "Error: ${file} is invalid. Below keys must be camel-cased."
-      echo "${invalid_keys}"
+      echo "${invalid_keys}"      
       valid=false
   fi
 
