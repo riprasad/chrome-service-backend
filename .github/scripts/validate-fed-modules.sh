@@ -10,24 +10,27 @@ set -eo pipefail
 # error message with the line number where the error occurred.
 trap 's=$?; echo "Error on $LINENO"; exit $s' ERR
 
-# Colors
-# ---
-# Inspired from: https://unix.stackexchange.com/questions/9957/how-to-check-if-bash-can-print-colors
 
-f_bold="$(tput bold)"
-f_normal="$(tput sgr0)"
-f_red="$(tput setaf 1)"
-f_green="$(tput setaf 2)"
+# Define color variables
+bold='\e[1m'
+red='\e[1;31m'
+green='\e[1;32m'
+yellow='\e[1;33m'
+reset='\e[0m'
 
 
 # Utils
 # ---
 function error() {
-    log "${f_bold}${f_red}error${f_normal}: $1"
+    echo "${bold}${red}Error${reset}: $1"
 }
 
 function info() {
-    log "${f_bold}${f_green}info${f_normal}: $1"
+    echo "${bold}${green}info${reset}: $1"
+}
+
+function log() {
+    echo "${yellow}${1}${reset}"
 }
 
 
@@ -49,7 +52,7 @@ do
       info "${file} is valid."
   else
       error "${file} is invalid. Below keys must be camel-cased."
-      error "${invalid_keys}"
+      log "${invalid_keys}"
       valid=false
   fi
 
