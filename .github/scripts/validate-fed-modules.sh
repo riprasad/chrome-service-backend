@@ -2,13 +2,13 @@
 
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
-set -euo pipefail
+set -eo pipefail
 
 
 
-# Set a trap to catch errors in the script and print an error message
-# with the script name and line number where the error occurred.
-trap 's=$?; echo "$0: error on $0:$LINENO"; exit $s' ERR
+# Set a trap to catch errors in the script and print an 
+# error message with the line number where the error occurred.
+trap 's=$?; echo "Error on $LINENO"; exit $s' ERR
 
 # Colors
 # ---
@@ -58,7 +58,7 @@ do
   invalid_keys=$(cat $file | jq 'keys[] | select(test("^[a-z]+([A-Z][a-z]*)*$") | not)')
   
   if [ -z "$invalid_keys" ]; then
-      log "${file} is valid."
+      info "${file} is valid."
   else
       error "${file} is invalid. Below keys must be camel-cased."
       error "${invalid_keys}"
