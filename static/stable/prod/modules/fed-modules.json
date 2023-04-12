@@ -15,7 +15,7 @@
             }
         ]
     },
-    "userPreferences": {
+    "user-preferences": {
         "manifestLocation": "/apps/user-preferences/fed-mods.json",
         "modules": [
             {
@@ -80,7 +80,7 @@
             }
         ]
     },
-    "accessRequests": {
+    "access-requests": {
         "manifestLocation": "/apps/access-requests/fed-mods.json",
         "modules": [
             {
