@@ -23,10 +23,5 @@ jobs:
       - name: Checkout Code Ref '${{ github.ref }}'
         uses: actions/checkout@v3
 
-      - name: Run validation script
-        run: |
-           ./.github/scripts/validate-fed-modules.sh
-           if [ "$?" -ne 0 ]; then
-             echo "Validation failed. Exiting workflow."
-             exit 1
-           fi
+      - name: Validate fed-modules.json
+        run: ./.github/scripts/validate-fed-modules.sh
