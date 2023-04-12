@@ -10,6 +10,40 @@ set -euo pipefail
 # with the script name and line number where the error occurred.
 trap 's=$?; echo "$0: error on $0:$LINENO"; exit $s' ERR
 
+# Colors
+# ---
+# Inspired from: https://unix.stackexchange.com/questions/9957/how-to-check-if-bash-can-print-colors
+
+f_bold=
+f_normal=
+f_red=
+f_green=
+
+# Check if we are in a terminal...
+if [[ -n "$TERM" ]]; then
+    # See if it supports colors...
+    nc=$(tput colors || true)
+    if [[ -n "$nc" ]] && [[ $nc -ge 8 ]]; then
+        f_bold="$(tput bold)"
+        f_normal="$(tput sgr0)"
+        f_red="$(tput setaf 1)"
+        f_green="$(tput setaf 2)"
+    fi
+fi
+
+
+# Utils
+# ---
+function error() {
+    log "${f_bold}${f_red}error${f_normal}: $1"
+}
+
+function info() {
+    log "${f_bold}${f_green}info${f_normal}: $1"
+}
+
+
+
 # Find all files named "fed-modules.json" in the "static" directory
 # and store their paths in an array named "files".
 files=($(find static -name "fed-modules.json"))
@@ -24,10 +58,10 @@ do
   invalid_keys=$(cat $file | jq 'keys[] | select(test("^[a-z]+([A-Z][a-z]*)*$") | not)')
   
   if [ -z "$invalid_keys" ]; then
-      echo "${file} is valid."
+      log "${file} is valid."
   else
-      echo "${file} is invalid. Below keys must be camel-cased."
-      echo "${invalid_keys}"
+      error "${file} is invalid. Below keys must be camel-cased."
+      error "${invalid_keys}"
       valid=false
   fi
 
