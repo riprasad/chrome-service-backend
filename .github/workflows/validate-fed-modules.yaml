@@ -1,5 +1,6 @@
 name: Validate fed-modules.json
 on:
+  workflow_dispatch: {}
   pull_request:
     branches: [main]
     # Run only when fed-modules.json is changed in any subdirectory of the static folder.
